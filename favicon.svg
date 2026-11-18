@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" role="img" aria-label="Taapti">
+  <rect width="256" height="256" rx="56" fill="#172554"/>
+  <path d="M60,64 H196 A4,4 0 0 1 200,68 V88 L200,88 H56 L56,88 V68 A4,4 0 0 1 60,64 Z" fill="#FFFFFF"/>
+  <path d="M88,100 H112 L112,100 V200 A4,4 0 0 1 108,204 H92 A4,4 0 0 1 88,200 V100 L88,100 Z" fill="#FFFFFF"/>
+  <path d="M144,100 H168 L168,100 V200 A4,4 0 0 1 164,204 H148 A4,4 0 0 1 144,200 V100 L144,100 Z" fill="#5EE0A8"/>
+</svg>

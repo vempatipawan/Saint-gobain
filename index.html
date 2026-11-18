@@ -5,92 +5,126 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <title>Energy per Saleable Tonne · Taapti</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Raleway:wght@600;700&display=swap">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/favicon-16x16.png" sizes="16x16" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#172554">
 <style>
 /* Layout concept: one column that follows the glass down the line, hot end (amber) to cold end (teal).
    The heat-to-cool ribbon is the single recurring device; everything else stays quiet. */
-:root{
-  --bg:#F1F5F5; --surface:#FFFFFF; --surface-2:#E4ECEC; --line:#C7D6D7;
-  --ink:#0D262B; --ink-2:#47626A;
-  --glass:#0A767C; --glass-soft:#D6EBEB; --on-glass:#FFFFFF;
-  --heat:#C75F06; --heat-soft:#FBE6CF;
-  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
-  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
-  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+:root {
+  /* Ground */
+  --paper: #FCFDFF;
+  --tint: #F0F5FD;
+  --surface: #FFFFFF;
+  --border: #DCE4F2;
+  --border-strong: #C6D0E4;
+  --band: #121E48;
+
+  /* Ink */
+  --ink: #172554;
+  --body: #2E3C64;
+  --muted: #646F91;
+  --band-muted: #A3B0D2;
+
+  /* Label. Eyebrows, icons, avatars, tags. Never running text, where blue would read as a link. */
+  --label: #2A5FD0;
+  --label-soft: #E6EDFB;
+
+  /* Primary. Buttons, links, the chosen state, the focus ring, the mark's second stem. Nothing else. */
+  --primary: #007F4F;
+  --primary-deep: #00663C;
+  --primary-soft: #E3F4EB;
+
+  /* Spark. One per route, and only on a --band ground. */
+  --spark: #5EE0A8;
+
+  /* Status. Only in response to an event, always a sentence with an icon. */
+  --success: #00663C;
+  --warning: #8A5A0F;
+  --danger: #A32C28;
+
+  /* Type */
+  --font-heading: "Raleway", system-ui, sans-serif;
+  --font-body: "Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
 }
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --bg:#08171A; --surface:#0F2327; --surface-2:#173236; --line:#27464A;
-    --ink:#E3EEEE; --ink-2:#9CB4B7;
-    --glass:#4FC4C5; --glass-soft:#113A3D; --on-glass:#052022;
-    --heat:#F29A3F; --heat-soft:#3A2511; color-scheme:dark;
-  }
-}
-:root[data-theme="dark"]{
-  --bg:#08171A; --surface:#0F2327; --surface-2:#173236; --line:#27464A;
-  --ink:#E3EEEE; --ink-2:#9CB4B7;
-  --glass:#4FC4C5; --glass-soft:#113A3D; --on-glass:#052022;
-  --heat:#F29A3F; --heat-soft:#3A2511; color-scheme:dark;
+:root {
+  --text-display: 48px;    --leading-display: 56px;
+  --text-h2: 32px;         --leading-h2: 40px;
+  --text-h3: 22px;         --leading-h3: 30px;
+  --text-body: 17px;       --leading-body: 28px;
+  --text-small: 14px;      --leading-small: 22px;
+  --text-button: 15px;     --leading-button: 20px;
+  --text-eyebrow: 12px;    --leading-eyebrow: 16px;
+  --tracking-eyebrow: 0.08em;
+
+  --text-display-sm: 34px; --leading-display-sm: 40px;
+  --text-h2-sm: 26px;      --leading-h2-sm: 34px;
+
+  --measure: 68ch;
 }
 *,*::before,*::after{box-sizing:border-box}
 [hidden]{display:none!important}
-body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--body)}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 16px/1.55 var(--font-body)}
 .wrap{max-width:1060px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 section{padding-block:44px}
-section + section .wrap{border-top:1px solid var(--line);padding-top:44px}
+section + section .wrap{border-top:1px solid var(--border);padding-top:44px}
 section + section{padding-top:0}
-h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.05;margin:0;text-wrap:balance;letter-spacing:.005em}
-h1{font-size:clamp(2.3rem,7vw,4.1rem);text-transform:uppercase}
-h2{font-size:clamp(1.7rem,4.2vw,2.5rem);text-transform:uppercase}
+h1,h2,h3{font-family:var(--font-heading);font-weight:700;line-height:1.05;margin:0;text-wrap:balance}
+h1{font-size:clamp(2.3rem,7vw,4.1rem)}
+h2{font-size:clamp(1.7rem,4.2vw,2.5rem)}
 h3{font-size:1.4rem;font-weight:600}
 p{margin:0;max-width:65ch}
-a{color:var(--glass)}
-:focus-visible{outline:3px solid var(--heat);outline-offset:2px}
-.eyebrow{font:500 .78rem/1.3 var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--ink-2)}
-.lede{font-size:1.1rem;color:var(--ink-2)}
+a{color:var(--label)}
+:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.eyebrow{font:500 .78rem/1.3 var(--font-body);letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.lede{font-size:1.1rem;color:var(--muted)}
 .stack{display:flex;flex-direction:column;gap:18px}
 .head{display:flex;flex-direction:column;gap:10px;margin-bottom:26px}
-.tag{display:inline-block;font:500 .7rem/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:5px 7px;border:1px solid var(--line);color:var(--ink-2);border-radius:3px;white-space:nowrap}
-.tag.heat{border-color:var(--heat);color:var(--heat)}
-.tag.lead{background:var(--heat);border-color:var(--heat);color:var(--bg)}
-.btn{display:inline-block;font:600 1rem/1 var(--body);padding:14px 20px;background:var(--glass);color:var(--on-glass);text-decoration:none;border:0;border-radius:4px;cursor:pointer}
+.tag{display:inline-block;font:500 .75rem/1 var(--font-body);letter-spacing:.08em;text-transform:uppercase;padding:5px 7px;border:1px solid var(--border);color:var(--muted);border-radius:3px;white-space:nowrap}
+.tag.heat{border-color:var(--ink);color:var(--ink)}
+.tag.lead{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.btn{display:inline-block;font:600 1rem/1 var(--font-body);padding:14px 20px;background:var(--label);color:var(--surface);text-decoration:none;border:0;border-radius:4px;cursor:pointer}
 .btn:hover{filter:brightness(1.08)}
 
 /* Hero */
 .hero{padding-block:52px 40px}
 .hero .stack{gap:22px}
-.hero h1 em{font-style:normal;color:var(--glass)}
-.hero h1 em.hot{color:var(--heat)}
+.hero h1 em{font-style:normal;color:var(--label)}
+.hero h1 em.hot{color:var(--ink)}
 .profile{display:flex;flex-wrap:wrap;gap:8px}
 .ribbon{margin-top:14px}
-.ribbon-bar{height:16px;border-radius:2px;background:linear-gradient(90deg,var(--heat) 0%,var(--heat) 18%,color-mix(in oklab,var(--heat) 45%,var(--glass)) 48%,var(--glass) 74%,var(--glass-soft) 100%)}
+.ribbon-bar{height:16px;border-radius:2px;background:linear-gradient(90deg,var(--ink) 0%,var(--ink) 18%,color-mix(in oklab,var(--ink) 45%,var(--label)) 48%,var(--label) 74%,var(--label-soft) 100%)}
 .ribbon-marks{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
-.ribbon-marks div{border-left:1px solid var(--line);padding-left:8px;min-width:0}
-.ribbon-marks b{display:block;font:500 clamp(.95rem,3.4vw,1.35rem)/1.1 var(--mono);font-variant-numeric:tabular-nums}
-.ribbon-marks span{font-size:.78rem;color:var(--ink-2);line-height:1.3;display:block;margin-top:3px}
-.ribbon-note{font-size:.8rem;color:var(--ink-2);margin-top:10px}
+.ribbon-marks div{border-left:1px solid var(--border);padding-left:8px;min-width:0}
+.ribbon-marks b{display:block;font:500 clamp(.95rem,3.4vw,1.35rem)/1.1 var(--font-body);font-variant-numeric:tabular-nums}
+.ribbon-marks span{font-size:.78rem;color:var(--muted);line-height:1.3;display:block;margin-top:3px}
+.ribbon-note{font-size:.8rem;color:var(--muted);margin-top:10px}
 
 /* Why */
 .why{display:grid;gap:22px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
 .why article{display:flex;flex-direction:column;gap:8px;min-width:0}
-.why .fact{font:700 2.6rem/1 var(--display);color:var(--glass)}
-.why .fact small{display:block;margin-top:6px;font:500 .8rem var(--mono);color:var(--ink-2);letter-spacing:.04em}
-.why p{font-size:.95rem;color:var(--ink-2)}
-.contrast{margin-top:26px;padding:14px 16px;background:var(--surface-2);border-radius:4px;font-size:.95rem}
+.why .fact{font:700 2.6rem/1 var(--font-heading);color:var(--label)}
+.why .fact small{display:block;margin-top:6px;font:500 .8rem var(--font-body);color:var(--muted);letter-spacing:.04em}
+.why p{font-size:.95rem;color:var(--muted)}
+.contrast{margin-top:26px;padding:14px 16px;background:var(--tint);border-radius:4px;font-size:.95rem}
 
 /* Process flow */
 .flow{display:grid;grid-template-columns:1fr;gap:8px}
-.stage-btn{width:100%;text-align:left;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-top:5px solid var(--c);border-radius:3px;padding:12px;cursor:pointer;font:inherit;display:flex;flex-direction:column;gap:5px;min-width:0}
-.stage-btn strong{font:600 1.2rem/1.1 var(--display);text-transform:uppercase;letter-spacing:.02em}
-.stage-btn span{font:400 .76rem/1.25 var(--mono);color:var(--ink-2)}
-.stage-btn[aria-expanded="true"]{background:var(--ink);border-color:var(--ink);border-top-color:var(--c);color:var(--bg)}
-.stage-btn[aria-expanded="true"] span{color:var(--bg);opacity:.8}
-.stage-panel{background:var(--surface);border:1px solid var(--line);border-radius:3px;padding:20px;display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));min-width:0;margin-bottom:6px}
-.stage-panel h4{margin:0 0 6px;font:500 .72rem var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--ink-2)}
+.stage-btn{width:100%;text-align:left;background:var(--surface);color:var(--ink);border:1px solid var(--border);border-top:5px solid var(--c);border-radius:3px;padding:12px;cursor:pointer;font:inherit;display:flex;flex-direction:column;gap:5px;min-width:0}
+.stage-btn strong{font:600 1.2rem/1.1 var(--font-heading)}
+.stage-btn span{font:400 .76rem/1.25 var(--font-body);color:var(--muted)}
+.stage-btn[aria-expanded="true"]{background:var(--ink);border-color:var(--ink);border-top-color:var(--c);color:var(--paper)}
+.stage-btn[aria-expanded="true"] span{color:var(--paper);opacity:.8}
+.stage-panel{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:20px;display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));min-width:0;margin-bottom:6px}
+.stage-panel h4{margin:0 0 6px;font:500 .75rem var(--font-body);letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
 .stage-panel p,.stage-panel li{font-size:.94rem}
 .stage-panel ul{margin:0;padding-left:18px}
 .stage-panel .apply{display:flex;flex-wrap:wrap;gap:6px}
-.flow-hint{font-size:.85rem;color:var(--ink-2);margin-top:10px}
+.flow-hint{font-size:.85rem;color:var(--muted);margin-top:10px}
 @media (min-width:820px){
   .flow{grid-template-columns:repeat(6,1fr)}
   .stage{display:contents}
@@ -101,94 +135,94 @@ a{color:var(--glass)}
 /* Root cause */
 .rc{display:grid;gap:22px;grid-template-columns:1fr}
 @media (min-width:900px){.rc{grid-template-columns:1.7fr 1fr;align-items:start}}
-.chart{background:var(--surface);border:1px solid var(--line);border-radius:3px;overflow-x:auto;min-width:0}
+.chart{background:var(--surface);border:1px solid var(--border);border-radius:3px;overflow-x:auto;min-width:0}
 .chart svg{display:block;width:100%;min-width:680px;height:auto}
-.chart text{font-family:var(--mono);font-size:12px;fill:var(--ink-2)}
+.chart text{font-family:var(--font-body);font-size:12px;fill:var(--muted)}
 .chart .t{fill:var(--ink);font-weight:500}
-.chart .hot{fill:var(--heat)} .chart .cool{fill:var(--glass)}
-.alert{background:var(--surface);border:1px solid var(--line);border-left:5px solid var(--heat);border-radius:3px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.chart .hot{fill:var(--ink)} .chart .cool{fill:var(--label)}
+.alert{background:var(--surface);border:1px solid var(--border);border-left:5px solid var(--ink);border-radius:3px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
 .alert h3{font-size:1.25rem}
 .alert dl{margin:0;display:grid;gap:10px}
-.alert dt{font:500 .7rem var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--ink-2)}
+.alert dt{font:500 .75rem var(--font-body);letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
 .alert dd{margin:2px 0 0;font-size:.94rem}
-.alert .who{border-top:1px solid var(--line);padding-top:12px;font-size:.9rem;color:var(--ink-2)}
-.lagnote{margin-top:18px;font-size:.95rem;color:var(--ink-2)}
+.alert .who{border-top:1px solid var(--border);padding-top:12px;font-size:.9rem;color:var(--muted)}
+.lagnote{margin-top:18px;font-size:.95rem;color:var(--muted)}
 
 /* Solutions */
 .sols{display:grid;gap:14px;grid-template-columns:1fr}
 @media (min-width:760px){.sols{grid-template-columns:1fr 1fr}.sol.lead{grid-column:1/-1}}
-.sol{background:var(--surface);border:1px solid var(--line);border-radius:3px;padding:20px;display:flex;flex-direction:column;gap:12px;min-width:0}
-.sol.lead{border:2px solid var(--heat)}
+.sol{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:20px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.sol.lead{border:2px solid var(--ink)}
 .sol-top{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
-.sol-n{font:700 1.4rem/1 var(--display);color:var(--ink-2)}
+.sol-n{font:700 1.4rem/1 var(--font-heading);color:var(--muted)}
 .sol p{font-size:.95rem}
-.sol .q{color:var(--ink-2)}
-.sol dl{margin:auto 0 0;display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:.88rem;border-top:1px solid var(--line);padding-top:12px}
-.sol dt{font:500 .7rem/1.7 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
+.sol .q{color:var(--muted)}
+.sol dl{margin:auto 0 0;display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:.88rem;border-top:1px solid var(--border);padding-top:12px}
+.sol dt{font:500 .75rem/1.7 var(--font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .sol dd{margin:0}
-.sol .note{font-size:.85rem;color:var(--ink-2);background:var(--surface-2);padding:8px 10px;border-radius:3px}
+.sol .note{font-size:.85rem;color:var(--muted);background:var(--tint);padding:8px 10px;border-radius:3px}
 
 /* How it works */
 .steps{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));counter-reset:s;list-style:none;margin:0;padding:0}
-.steps li{counter-increment:s;background:var(--surface);border:1px solid var(--line);border-radius:3px;padding:16px;display:flex;flex-direction:column;gap:6px;min-width:0}
-.steps li::before{content:"Step " counter(s);font:500 .72rem var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--glass)}
-.steps p{font-size:.92rem;color:var(--ink-2)}
-.human{margin-top:10px;background:var(--ink);color:var(--bg);border-radius:3px;padding:18px 20px;display:flex;gap:14px;align-items:flex-start}
+.steps li{counter-increment:s;background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:16px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.steps li::before{content:"Step " counter(s);font:500 .75rem var(--font-body);letter-spacing:.09em;text-transform:uppercase;color:var(--label)}
+.steps p{font-size:.92rem;color:var(--muted)}
+.human{margin-top:10px;background:var(--ink);color:var(--paper);border-radius:3px;padding:18px 20px;display:flex;gap:14px;align-items:flex-start}
 .human svg{flex:none;width:34px;height:34px}
-.human strong{font:600 1.3rem/1.1 var(--display);text-transform:uppercase;display:block;margin-bottom:4px}
+.human strong{font:600 1.3rem/1.1 var(--font-heading);display:block;margin-bottom:4px}
 .human p{font-size:.95rem;opacity:.9}
 
 /* Pilot */
 .phases{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));list-style:none;margin:0;padding:0}
-.phases li{border-top:5px solid var(--glass);background:var(--surface);border-left:1px solid var(--line);border-right:1px solid var(--line);border-bottom:1px solid var(--line);border-radius:3px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;min-width:0}
-.phases li:last-child{border-top-color:var(--heat)}
-.phases .wk{font:500 .76rem var(--mono);color:var(--ink-2);letter-spacing:.05em}
-.phases p{font-size:.92rem;color:var(--ink-2)}
+.phases li{border-top:5px solid var(--label);background:var(--surface);border-left:1px solid var(--border);border-right:1px solid var(--border);border-bottom:1px solid var(--border);border-radius:3px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.phases li:last-child{border-top-color:var(--ink)}
+.phases .wk{font:500 .76rem var(--font-body);color:var(--muted);letter-spacing:.05em}
+.phases p{font-size:.92rem;color:var(--muted)}
 .pilot-facts{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
 
 /* Checklist */
 .check{list-style:none;margin:0;padding:0;display:grid;gap:8px}
-.check label{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:3px;padding:14px 16px;cursor:pointer}
-.check input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--glass)}
+.check label{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;align-items:start;background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:14px 16px;cursor:pointer}
+.check input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--label)}
 .check b{font-weight:600}
-.check small{grid-column:2;color:var(--ink-2);font-size:.86rem}
+.check small{grid-column:2;color:var(--muted);font-size:.86rem}
 .check-foot{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;font-size:.95rem}
-.check-foot output{font:500 .9rem var(--mono);color:var(--glass)}
+.check-foot output{font:500 .9rem var(--font-body);color:var(--label)}
 
 /* CTA */
-.cta{background:var(--glass-soft);padding-block:48px}
+.cta{background:var(--label-soft);padding-block:48px}
 section.cta .wrap{border-top:0;padding-top:0}
 .cta-grid{display:grid;gap:24px;grid-template-columns:1fr}
 @media (min-width:800px){.cta-grid{grid-template-columns:1.3fr 1fr;align-items:center}}
-.contact{background:var(--surface);border:1px solid var(--line);border-radius:3px;padding:20px;display:flex;flex-direction:column;gap:8px;min-width:0}
-.contact .name{font:600 1.5rem/1.1 var(--display);text-transform:uppercase}
-.contact .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font:400 .95rem var(--mono);overflow-wrap:anywhere;user-select:all}
-.copy{font:500 .72rem var(--mono);padding:5px 8px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);border-radius:3px;cursor:pointer;user-select:none}
-.who-we-are{font-size:.95rem;color:var(--ink-2)}
+.contact{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:20px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.contact .name{font:600 1.5rem/1.1 var(--font-heading)}
+.contact .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font:400 .95rem var(--font-body);overflow-wrap:anywhere;user-select:all}
+.copy{font:500 .75rem var(--font-body);padding:5px 8px;border:1px solid var(--border);background:var(--tint);color:var(--ink);border-radius:3px;cursor:pointer;user-select:none}
+.who-we-are{font-size:.95rem;color:var(--muted)}
 
 /* The one number */
 .eq{display:grid;gap:14px}
-.eq-frac{background:var(--surface);border:1px solid var(--line);border-radius:3px;padding:22px 18px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;font:600 clamp(1.25rem,4.4vw,1.8rem)/1.15 var(--display);text-transform:uppercase;letter-spacing:.01em}
-.eq-top{color:var(--heat)}
-.eq-bot{color:var(--glass);border-top:3px solid var(--ink);padding-top:12px;width:100%}
+.eq-frac{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:22px 18px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;font:600 clamp(1.25rem,4.4vw,1.8rem)/1.15 var(--font-heading)}
+.eq-top{color:var(--ink)}
+.eq-bot{color:var(--label);border-top:3px solid var(--ink);padding-top:12px;width:100%}
 .levers{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
-.lever{background:var(--surface);border:1px solid var(--line);border-top:5px solid var(--glass);border-radius:3px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;min-width:0}
-.lever.hot{border-top-color:var(--heat)}
-.lever p{font-size:.95rem;color:var(--ink-2)}
-.worked{background:var(--surface);border:1px solid var(--line);border-radius:3px;overflow-x:auto;min-width:0}
+.lever{background:var(--surface);border:1px solid var(--border);border-top:5px solid var(--label);border-radius:3px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.lever.hot{border-top-color:var(--ink)}
+.lever p{font-size:.95rem;color:var(--muted)}
+.worked{background:var(--surface);border:1px solid var(--border);border-radius:3px;overflow-x:auto;min-width:0}
 .worked table{width:100%;border-collapse:collapse;font-size:.95rem}
-.worked th,.worked td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:right;font-variant-numeric:tabular-nums}
+.worked th,.worked td{padding:10px 12px;border-bottom:1px solid var(--border);text-align:right;font-variant-numeric:tabular-nums}
 .worked th:first-child,.worked td:first-child{text-align:left}
-.worked thead th{font:500 .74rem var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--ink-2)}
-.worked td:not(:first-child){font-family:var(--mono)}
+.worked thead th{font:500 .75rem var(--font-body);letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.worked td:not(:first-child){font-family:var(--font-body)}
 .worked tr.key td{font-weight:600;border-bottom:0}
-.worked tr.key td:last-child{color:var(--glass)}
-.worked-cap{font-size:.88rem;color:var(--ink-2);margin-top:10px}
-.also{margin-top:14px;font-size:.92rem;color:var(--ink-2)}
+.worked tr.key td:last-child{color:var(--label)}
+.worked-cap{font-size:.88rem;color:var(--muted);margin-top:10px}
+.also{margin-top:14px;font-size:.92rem;color:var(--muted)}
 
 /* Phone: larger small text, chart drawn for a narrow screen */
 .chart .narrow{display:none}
-.chart-cap{font-size:.85rem;color:var(--ink-2);padding:0 14px 12px;margin:0}
+.chart-cap{font-size:.85rem;color:var(--muted);padding:0 14px 12px;margin:0}
 .only-phone{display:none}
 @media (max-width:700px){
   body{font-size:17px}
@@ -219,18 +253,62 @@ section.cta .wrap{border-top:0;padding-top:0}
 
 /* Footer note */
 .footnote{padding-block:28px 40px}
-.brandbar{background:var(--surface);border-bottom:1px solid var(--line)}
+.brandbar{background:var(--surface);border-bottom:1px solid var(--border)}
 .brandbar .wrap{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-block:11px}
-.mark{font:700 1.5rem/1 var(--display);letter-spacing:.02em;text-transform:uppercase;display:flex;align-items:center;gap:8px}
-.mark i{width:11px;height:11px;border-radius:50%;background:var(--heat);display:block}
-.brandbar span{font:400 .78rem/1.3 var(--mono);color:var(--ink-2);text-align:right}
-.about{border-top:1px solid var(--line);padding-top:16px;display:grid;gap:8px}
-.about p{font-size:.97rem;color:var(--ink-2)}
+.mark{font:700 1.5rem/1 var(--font-heading);display:flex;align-items:center;gap:8px}
+.mark i{width:11px;height:11px;border-radius:50%;background:var(--ink);display:block}
+.brandbar span{font:400 .78rem/1.3 var(--font-body);color:var(--muted);text-align:right}
+.about{border-top:1px solid var(--border);padding-top:16px;display:grid;gap:8px}
+.about p{font-size:.97rem;color:var(--muted)}
 .about a{font-weight:600}
+
+/* ===== Taapti brand layer: Brand Kit v3.0, Green Signal. Blue labels, green actions. ===== */
+html{color-scheme:light}
+body{background:var(--paper);color:var(--body);font:400 var(--text-body)/var(--leading-body) var(--font-body);font-variant-numeric:lining-nums}
+h1,h2,h3{font-family:var(--font-heading);font-weight:700;color:var(--ink);letter-spacing:0}
+h1{font-size:var(--text-display-sm);line-height:var(--leading-display-sm)}
+h2{font-size:var(--text-h2-sm);line-height:var(--leading-h2-sm)}
+h3{font-size:var(--text-h3);line-height:var(--leading-h3)}
+@media (min-width:760px){
+  h1{font-size:var(--text-display);line-height:var(--leading-display)}
+  h2{font-size:var(--text-h2);line-height:var(--leading-h2)}
+}
+p{max-width:var(--measure)}
+a{color:var(--primary);text-decoration:underline;text-underline-offset:3px}
+a:hover{color:var(--primary-deep)}
+:focus-visible{outline:3px solid var(--primary);outline-offset:2px}
+.eyebrow,h4,.stage-panel h4,.alert dt,.sol dt{font:600 var(--text-eyebrow)/var(--leading-eyebrow) var(--font-body);letter-spacing:var(--tracking-eyebrow);text-transform:uppercase;color:var(--label)}
+.lede{color:var(--body)}
+.btn{font:600 var(--text-button)/var(--leading-button) var(--font-body);padding:14px 22px;background:var(--primary);color:var(--surface);border-radius:8px;text-decoration:none}
+.btn:hover{background:var(--primary-deep);color:var(--surface);filter:none}
+.btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}
+.btn.ghost:hover{background:var(--tint);color:var(--ink)}
+.tag{font:600 var(--text-eyebrow)/var(--leading-eyebrow) var(--font-body);letter-spacing:.04em;padding:6px 9px;background:var(--label-soft);color:var(--label);border-color:transparent;border-radius:6px}
+.stage-btn{font-family:var(--font-body)}
+.stage-btn strong{font-family:var(--font-heading);font-weight:700;color:var(--ink)}
+.stage-btn[aria-expanded="true"]{background:var(--primary-soft);border-color:var(--primary);color:var(--primary-deep)}
+.stage-btn[aria-expanded="true"] :is(.n,.s,.c,strong,span){color:var(--primary-deep);opacity:1}
+.brandbar span{font:400 var(--text-small)/var(--leading-small) var(--font-body);color:var(--muted)}
+.mark{font:700 20px/1 var(--font-heading);letter-spacing:0;text-transform:none;color:var(--ink);display:flex;align-items:center;gap:6px}
+.mark svg{width:32px;height:32px;flex:none;display:block}
+.brandbar .mark span{font:inherit;color:inherit}
+
+.hero h1 em,.hero h1 em.hot{color:inherit}
+.why .fact{color:var(--ink)}
+.tag.heat{background:var(--surface);border-color:var(--border-strong);color:var(--ink)}
+.tag.lead{background:var(--label);border-color:var(--label);color:var(--surface)}
+.human{background:var(--band);color:var(--surface)}
+.human svg{color:var(--spark)}
+.eq-bot{color:var(--ink)}
+.worked tr.key td:last-child{color:var(--ink)}
+.check input{accent-color:var(--primary)}
+.check-foot output{color:var(--ink);font-weight:600}
+.cta{background:var(--tint)}
+.copy{font:600 var(--text-eyebrow)/var(--leading-eyebrow) var(--font-body);border-color:var(--border-strong);background:var(--surface);border-radius:6px}
 </style>
 </head>
 <body>
-<div class="brandbar"><div class="wrap"><div class="mark"><i></i>Taapti</div><span>AI engineering · Surat</span></div></div>
+<div class="brandbar"><div class="wrap"><div class="mark"><svg viewBox="0 0 256 256" aria-hidden="true"><path d="M44,44 H212 A8,8 0 0 1 220,52 V76 L220,76 H36 L36,76 V52 A8,8 0 0 1 44,44 Z" style="fill:var(--ink)"/><path d="M76,92 H108 L108,92 V216 A8,8 0 0 1 100,224 H84 A8,8 0 0 1 76,216 V92 L76,92 Z" style="fill:var(--ink)"/><path d="M148,92 H180 L180,92 V216 A8,8 0 0 1 172,224 H156 A8,8 0 0 1 148,216 V92 L148,92 Z" style="fill:var(--primary)"/></svg><span>Taapti</span></div><span>AI engineering · Surat</span></div></div>
 
 <header class="hero">
   <div class="wrap stack">
@@ -335,7 +413,7 @@ section.cta .wrap{border-top:0;padding-top:0}
     </div>
     <div class="flow" id="flow">
       <div class="stage">
-        <button class="stage-btn" style="--c:var(--ink-2)" aria-expanded="false" aria-controls="p0" id="b0"><strong>Batch house</strong><span>sand, soda ash, cullet</span></button>
+        <button class="stage-btn" style="--c:var(--muted)" aria-expanded="false" aria-controls="p0" id="b0"><strong>Batch house</strong><span>sand, soda ash, cullet</span></button>
         <div class="stage-panel" id="p0" hidden>
           <div><h4>What happens</h4><p>Silica sand, soda ash, dolomite, limestone and cullet are weighed and mixed. Cullet is typically 15 to 25% of the batch.</p></div>
           <div><h4>What goes wrong</h4><ul><li>Composition or moisture drifts between deliveries</li><li>Contaminated cullet brings stones</li><li>A cullet ratio change shifts how the furnace melts</li></ul></div>
@@ -343,7 +421,7 @@ section.cta .wrap{border-top:0;padding-top:0}
         </div>
       </div>
       <div class="stage">
-        <button class="stage-btn" style="--c:var(--heat)" aria-expanded="true" aria-controls="p1" id="b1"><strong>Melting furnace</strong><span>~1,500°C, up to 50 h</span></button>
+        <button class="stage-btn" style="--c:var(--ink)" aria-expanded="true" aria-controls="p1" id="b1"><strong>Melting furnace</strong><span>~1,500°C, up to 50 h</span></button>
         <div class="stage-panel" id="p1">
           <div><h4>What happens</h4><p>Batch melts and refines at about 1,500°C in a gas-fired regenerative furnace. The full melting process can take up to 50 hours.</p></div>
           <div><h4>What goes wrong</h4><ul><li>Temperature or pull swings leave bubbles and seeds</li><li>Refractory wear sheds stones</li><li>Fuel burns nonstop, the largest energy cost on site</li></ul></div>
@@ -351,7 +429,7 @@ section.cta .wrap{border-top:0;padding-top:0}
         </div>
       </div>
       <div class="stage">
-        <button class="stage-btn" style="--c:color-mix(in oklab,var(--heat) 55%,var(--glass))" aria-expanded="false" aria-controls="p2" id="b2"><strong>Tin bath</strong><span>1,100 → 600°C</span></button>
+        <button class="stage-btn" style="--c:color-mix(in oklab,var(--ink) 55%,var(--label))" aria-expanded="false" aria-controls="p2" id="b2"><strong>Tin bath</strong><span>1,100 → 600°C</span></button>
         <div class="stage-panel" id="p2" hidden>
           <div><h4>What happens</h4><p>Glass floats on molten tin, entering at about 1,100°C and leaving as a solid ribbon at 600°C. Top rollers and line speed set the thickness.</p></div>
           <div><h4>What goes wrong</h4><ul><li>Tin condenses on the roof and drips back as top speck</li><li>Bath atmosphere upsets cause dross</li><li>Thickness and width changes take time to settle</li></ul></div>
@@ -359,7 +437,7 @@ section.cta .wrap{border-top:0;padding-top:0}
         </div>
       </div>
       <div class="stage">
-        <button class="stage-btn" style="--c:color-mix(in oklab,var(--heat) 22%,var(--glass))" aria-expanded="false" aria-controls="p3" id="b3"><strong>Annealing lehr</strong><span>600°C down, slowly</span></button>
+        <button class="stage-btn" style="--c:color-mix(in oklab,var(--ink) 22%,var(--label))" aria-expanded="false" aria-controls="p3" id="b3"><strong>Annealing lehr</strong><span>600°C down, slowly</span></button>
         <div class="stage-panel" id="p3" hidden>
           <div><h4>What happens</h4><p>The ribbon cools under tight control, along and across its width, to release the stress built up during forming.</p></div>
           <div><h4>What goes wrong</h4><ul><li>Uneven cooling leaves stress, then breakage at cutting</li><li>Worn or dirty rollers mark the bottom surface</li></ul></div>
@@ -367,7 +445,7 @@ section.cta .wrap{border-top:0;padding-top:0}
         </div>
       </div>
       <div class="stage">
-        <button class="stage-btn" style="--c:var(--glass)" aria-expanded="false" aria-controls="p4" id="b4"><strong>Inspection</strong><span>online scanners</span></button>
+        <button class="stage-btn" style="--c:var(--label)" aria-expanded="false" aria-controls="p4" id="b4"><strong>Inspection</strong><span>online scanners</span></button>
         <div class="stage-panel" id="p4" hidden>
           <div><h4>What happens</h4><p>Scanners check every square metre for bubbles, seeds, stones, distortion and tin defects, and log type, size, position and time.</p></div>
           <div><h4>What goes wrong</h4><ul><li>The scanner says that a defect happened, not why</li><li>The cause sits hours upstream, so tracing it is slow and manual</li></ul></div>
@@ -375,7 +453,7 @@ section.cta .wrap{border-top:0;padding-top:0}
         </div>
       </div>
       <div class="stage">
-        <button class="stage-btn" style="--c:var(--glass)" aria-expanded="false" aria-controls="p5" id="b5"><strong>Cutting &amp; warehouse</strong><span>cut, sort, pack</span></button>
+        <button class="stage-btn" style="--c:var(--label)" aria-expanded="false" aria-controls="p5" id="b5"><strong>Cutting &amp; warehouse</strong><span>cut, sort, pack</span></button>
         <div class="stage-panel" id="p5" hidden>
           <div><h4>What happens</h4><p>The ribbon is trimmed and cut to size. Defective areas are cut out and go back as cullet. Good glass is packed.</p></div>
           <div><h4>What goes wrong</h4><ul><li>Every upstream problem lands here as lost yield</li><li>Changeover glass is downgraded or re-melted</li></ul></div>
@@ -400,19 +478,19 @@ section.cta .wrap{border-top:0;padding-top:0}
           <defs><marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" style="fill:var(--ink)"/></marker></defs>
           <text x="60" y="34" class="t">FURNACE · zone 3 crown temperature</text>
           <text x="700" y="34" text-anchor="end">ILLUSTRATIVE</text>
-          <rect x="60" y="74" width="660" height="22" style="fill:var(--glass-soft)"/>
+          <rect x="60" y="74" width="660" height="22" style="fill:var(--label-soft)"/>
           <text x="716" y="68" text-anchor="end">normal band</text>
-          <polyline fill="none" style="stroke:var(--heat)" stroke-width="2.5" stroke-linejoin="round" points="60,85 82,83 104,86 126,84 148,85 170,84 188,86 198,100 208,116 220,118 232,106 244,90 258,85 280,84 302,86 324,84 346,85 368,83 390,85 412,86 434,84 456,85 478,84 500,86 522,84 544,85 566,83 588,85 610,86 632,84 654,85 676,84 698,85 720,84"/>
-          <circle cx="214" cy="118" r="5" style="fill:var(--heat)"/>
+          <polyline fill="none" style="stroke:var(--ink)" stroke-width="2.5" stroke-linejoin="round" points="60,85 82,83 104,86 126,84 148,85 170,84 188,86 198,100 208,116 220,118 232,106 244,90 258,85 280,84 302,86 324,84 346,85 368,83 390,85 412,86 434,84 456,85 478,84 500,86 522,84 544,85 566,83 588,85 610,86 632,84 654,85 676,84 698,85 720,84"/>
+          <circle cx="214" cy="118" r="5" style="fill:var(--ink)"/>
           <text x="250" y="124" class="hot">Drops below the normal band</text>
           <path d="M214 128 C214 204 511 150 511 212" fill="none" style="stroke:var(--ink)" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arr)"/>
           <rect x="302" y="161" width="122" height="24" rx="3" style="fill:var(--ink)"/>
-          <text x="363" y="177" text-anchor="middle" style="fill:var(--bg)">lag about 14 h</text>
+          <text x="363" y="177" text-anchor="middle" style="fill:var(--paper)">lag about 14 h</text>
           <text x="60" y="210" class="t">INSPECTION · bubbles per hour</text>
           <g id="bars"></g>
           <text x="574" y="246" class="cool">Bubble spike</text>
           <text x="574" y="262" class="cool">at the scanner</text>
-          <line x1="60" y1="300" x2="720" y2="300" style="stroke:var(--line)" stroke-width="1"/>
+          <line x1="60" y1="300" x2="720" y2="300" style="stroke:var(--border)" stroke-width="1"/>
           <g text-anchor="middle">
             <text x="60" y="322">−6 h</text><text x="192" y="322" class="t">T-0</text><text x="324" y="322">+6 h</text>
             <text x="456" y="322">+12 h</text><text x="588" y="322">+18 h</text><text x="720" y="322">+24 h</text>
@@ -421,17 +499,17 @@ section.cta .wrap{border-top:0;padding-top:0}
         <svg class="narrow" viewBox="0 0 360 322" xmlns="http://www.w3.org/2000/svg">
           <defs><marker id="arr2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" style="fill:var(--ink)"/></marker></defs>
           <text x="20" y="24" class="t">FURNACE · zone 3 crown temp</text>
-          <rect x="20" y="44" width="320" height="18" style="fill:var(--glass-soft)"/>
-          <polyline fill="none" style="stroke:var(--heat)" stroke-width="2.5" stroke-linejoin="round" points="20,53 40,52 60,54 68,54 73,66 78,84 84,85 90,72 96,56 110,53 140,54 170,52 200,53 230,54 260,52 290,53 320,54 340,53"/>
-          <circle cx="81" cy="85" r="5" style="fill:var(--heat)"/>
+          <rect x="20" y="44" width="320" height="18" style="fill:var(--label-soft)"/>
+          <polyline fill="none" style="stroke:var(--ink)" stroke-width="2.5" stroke-linejoin="round" points="20,53 40,52 60,54 68,54 73,66 78,84 84,85 90,72 96,56 110,53 140,54 170,52 200,53 230,54 260,52 290,53 320,54 340,53"/>
+          <circle cx="81" cy="85" r="5" style="fill:var(--ink)"/>
           <text x="100" y="94" class="hot">Drops below normal band</text>
           <path d="M81 96 C81 170 262 140 262 202" fill="none" style="stroke:var(--ink)" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arr2)"/>
           <rect x="112" y="141" width="124" height="26" rx="3" style="fill:var(--ink)"/>
-          <text x="174" y="159" text-anchor="middle" style="fill:var(--bg)">lag about 14 h</text>
+          <text x="174" y="159" text-anchor="middle" style="fill:var(--paper)">lag about 14 h</text>
           <text x="20" y="196" class="t">INSPECTION · bubbles per hour</text>
           <g id="bars2"></g>
           <text x="248" y="240" text-anchor="end" class="cool">Bubble spike</text>
-          <line x1="20" y1="290" x2="340" y2="290" style="stroke:var(--line)" stroke-width="1"/>
+          <line x1="20" y1="290" x2="340" y2="290" style="stroke:var(--border)" stroke-width="1"/>
           <g text-anchor="middle"><text x="73" y="310" class="t">T-0</text><text x="153" y="310">+6 h</text><text x="233" y="310">+12 h</text><text x="313" y="310">+18 h</text></g>
         </svg>
         <p class="chart-cap">Illustrative example, not plant data.</p>
@@ -529,7 +607,7 @@ section.cta .wrap{border-top:0;padding-top:0}
       <li><h3>Alert and explain</h3><p>Flag a deviation and say which signal moved, how far and when.</p></li>
     </ol>
     <div class="human">
-      <svg viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="11" r="6" fill="none" stroke="currentColor" stroke-width="2"/><path d="M5 31c0-7 5-11 12-11s12 4 12 11" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+      <svg viewBox="0 0 34 34" aria-hidden="true" data-spark><circle cx="17" cy="11" r="6" fill="none" stroke="currentColor" stroke-width="2"/><path d="M5 31c0-7 5-11 12-11s12 4 12 11" fill="none" stroke="currentColor" stroke-width="2"/></svg>
       <div><strong>Your engineer makes the call</strong><p>This is decision support. Our software changes no setpoint. If an insight cannot be explained in plain terms, it does not go out.</p></div>
     </div>
   </div>
@@ -581,7 +659,7 @@ section.cta .wrap{border-top:0;padding-top:0}
     <div class="stack">
       <h2>30 minutes to see if your data can answer this</h2>
       <p>Bring your fuel cost per tonne and one defect that keeps coming back. We will tell you plainly whether your existing data is likely to explain it, and what a pilot would look like.</p>
-      <p class="who-we-are">We are an AI and data engineering team. We are not glass technologists, and your people know the process better than we ever will. What we bring is the work around it: connecting messy plant data, solving the time-lag problem, and building tools engineers can check and trust.</p><div class="about"><div class="mark"><i></i>Taapti Technologies</div><p>An AI engineering firm in Surat. We build custom AI models and the software around them, trained on your data and running on your servers.</p></div>
+      <p class="who-we-are">We are an AI and data engineering team. We are not glass technologists, and your people know the process better than we ever will. What we bring is the work around it: connecting messy plant data, solving the time-lag problem, and building tools engineers can check and trust.</p><div class="about"><div class="mark"><svg viewBox="0 0 256 256" aria-hidden="true"><path d="M44,44 H212 A8,8 0 0 1 220,52 V76 L220,76 H36 L36,76 V52 A8,8 0 0 1 44,44 Z" style="fill:var(--ink)"/><path d="M76,92 H108 L108,92 V216 A8,8 0 0 1 100,224 H84 A8,8 0 0 1 76,216 V92 L76,92 Z" style="fill:var(--ink)"/><path d="M148,92 H180 L180,92 V216 A8,8 0 0 1 172,224 H156 A8,8 0 0 1 148,216 V92 L148,92 Z" style="fill:var(--primary)"/></svg><span>Taapti Technologies</span></div><p>An AI engineering firm in Surat. We build custom AI models and the software around them, trained on your data and running on your servers.</p></div>
     </div>
     <div class="contact">
       <span class="eyebrow">Discovery call</span>
@@ -666,7 +744,7 @@ const CONFIG = {
     const r = document.createElementNS(NS, "rect");
     r.setAttribute("x", 60 + i * 22 + 3); r.setAttribute("y", 300 - v);
     r.setAttribute("width", 16); r.setAttribute("height", v);
-    r.style.fill = v > 20 ? "var(--glass)" : "var(--line)";
+    r.style.fill = v > 20 ? "var(--label)" : "var(--border)";
     g.appendChild(r);
   });
   const g2 = $("bars2");
@@ -674,7 +752,7 @@ const CONFIG = {
     const r = document.createElementNS(NS, "rect");
     r.setAttribute("x", 20 + i * 13.33 + 1.5); r.setAttribute("y", 290 - v);
     r.setAttribute("width", 10); r.setAttribute("height", v);
-    r.style.fill = v > 20 ? "var(--glass)" : "var(--line)";
+    r.style.fill = v > 20 ? "var(--label)" : "var(--border)";
     g2.appendChild(r);
   });
 
