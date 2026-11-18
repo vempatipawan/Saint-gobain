@@ -1,0 +1,696 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Energy per Saleable Tonne · Taapti</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout concept: one column that follows the glass down the line, hot end (amber) to cold end (teal).
+   The heat-to-cool ribbon is the single recurring device; everything else stays quiet. */
+:root{
+  --bg:#F1F5F5; --surface:#FFFFFF; --surface-2:#E4ECEC; --line:#C7D6D7;
+  --ink:#0D262B; --ink-2:#47626A;
+  --glass:#0A767C; --glass-soft:#D6EBEB; --on-glass:#FFFFFF;
+  --heat:#C75F06; --heat-soft:#FBE6CF;
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#08171A; --surface:#0F2327; --surface-2:#173236; --line:#27464A;
+    --ink:#E3EEEE; --ink-2:#9CB4B7;
+    --glass:#4FC4C5; --glass-soft:#113A3D; --on-glass:#052022;
+    --heat:#F29A3F; --heat-soft:#3A2511; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#08171A; --surface:#0F2327; --surface-2:#173236; --line:#27464A;
+  --ink:#E3EEEE; --ink-2:#9CB4B7;
+  --glass:#4FC4C5; --glass-soft:#113A3D; --on-glass:#052022;
+  --heat:#F29A3F; --heat-soft:#3A2511; color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--body)}
+.wrap{max-width:1060px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+section{padding-block:44px}
+section + section .wrap{border-top:1px solid var(--line);padding-top:44px}
+section + section{padding-top:0}
+h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.05;margin:0;text-wrap:balance;letter-spacing:.005em}
+h1{font-size:clamp(2.3rem,7vw,4.1rem);text-transform:uppercase}
+h2{font-size:clamp(1.7rem,4.2vw,2.5rem);text-transform:uppercase}
+h3{font-size:1.4rem;font-weight:600}
+p{margin:0;max-width:65ch}
+a{color:var(--glass)}
+:focus-visible{outline:3px solid var(--heat);outline-offset:2px}
+.eyebrow{font:500 .78rem/1.3 var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--ink-2)}
+.lede{font-size:1.1rem;color:var(--ink-2)}
+.stack{display:flex;flex-direction:column;gap:18px}
+.head{display:flex;flex-direction:column;gap:10px;margin-bottom:26px}
+.tag{display:inline-block;font:500 .7rem/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:5px 7px;border:1px solid var(--line);color:var(--ink-2);border-radius:3px;white-space:nowrap}
+.tag.heat{border-color:var(--heat);color:var(--heat)}
+.tag.lead{background:var(--heat);border-color:var(--heat);color:var(--bg)}
+.btn{display:inline-block;font:600 1rem/1 var(--body);padding:14px 20px;background:var(--glass);color:var(--on-glass);text-decoration:none;border:0;border-radius:4px;cursor:pointer}
+.btn:hover{filter:brightness(1.08)}
+
+/* Hero */
+.hero{padding-block:52px 40px}
+.hero .stack{gap:22px}
+.hero h1 em{font-style:normal;color:var(--glass)}
+.hero h1 em.hot{color:var(--heat)}
+.profile{display:flex;flex-wrap:wrap;gap:8px}
+.ribbon{margin-top:14px}
+.ribbon-bar{height:16px;border-radius:2px;background:linear-gradient(90deg,var(--heat) 0%,var(--heat) 18%,color-mix(in oklab,var(--heat) 45%,var(--glass)) 48%,var(--glass) 74%,var(--glass-soft) 100%)}
+.ribbon-marks{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+.ribbon-marks div{border-left:1px solid var(--line);padding-left:8px;min-width:0}
+.ribbon-marks b{display:block;font:500 clamp(.95rem,3.4vw,1.35rem)/1.1 var(--mono);font-variant-numeric:tabular-nums}
+.ribbon-marks span{font-size:.78rem;color:var(--ink-2);line-height:1.3;display:block;margin-top:3px}
+.ribbon-note{font-size:.8rem;color:var(--ink-2);margin-top:10px}
+
+/* Why */
+.why{display:grid;gap:22px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.why article{display:flex;flex-direction:column;gap:8px;min-width:0}
+.why .fact{font:700 2.6rem/1 var(--display);color:var(--glass)}
+.why .fact small{display:block;margin-top:6px;font:500 .8rem var(--mono);color:var(--ink-2);letter-spacing:.04em}
+.why p{font-size:.95rem;color:var(--ink-2)}
+.contrast{margin-top:26px;padding:14px 16px;background:var(--surface-2);border-radius:4px;font-size:.95rem}
+
+/* Process flow */
+.flow{display:grid;grid-template-columns:1fr;gap:8px}
+.stage-btn{width:100%;text-align:left;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-top:5px solid var(--c);border-radius:3px;padding:12px;cursor:pointer;font:inherit;display:flex;flex-direction:column;gap:5px;min-width:0}
+.stage-btn strong{font:600 1.2rem/1.1 var(--display);text-transform:uppercase;letter-spacing:.02em}
+.stage-btn span{font:400 .76rem/1.25 var(--mono);color:var(--ink-2)}
+.stage-btn[aria-expanded="true"]{background:var(--ink);border-color:var(--ink);border-top-color:var(--c);color:var(--bg)}
+.stage-btn[aria-expanded="true"] span{color:var(--bg);opacity:.8}
+.stage-panel{background:var(--surface);border:1px solid var(--line);border-radius:3px;padding:20px;display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));min-width:0;margin-bottom:6px}
+.stage-panel h4{margin:0 0 6px;font:500 .72rem var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--ink-2)}
+.stage-panel p,.stage-panel li{font-size:.94rem}
+.stage-panel ul{margin:0;padding-left:18px}
+.stage-panel .apply{display:flex;flex-wrap:wrap;gap:6px}
+.flow-hint{font-size:.85rem;color:var(--ink-2);margin-top:10px}
+@media (min-width:820px){
+  .flow{grid-template-columns:repeat(6,1fr)}
+  .stage{display:contents}
+  .stage-btn{grid-row:1}
+  .stage-panel{grid-row:2;grid-column:1/-1;margin:6px 0 0}
+}
+
+/* Root cause */
+.rc{display:grid;gap:22px;grid-template-columns:1fr}
+@media (min-width:900px){.rc{grid-template-columns:1.7fr 1fr;align-items:start}}
+.chart{background:var(--surface);border:1px solid var(--line);border-radius:3px;overflow-x:auto;min-width:0}
+.chart svg{display:block;width:100%;min-width:680px;height:auto}
+.chart text{font-family:var(--mono);font-size:12px;fill:var(--ink-2)}
+.chart .t{fill:var(--ink);font-weight:500}
+.chart .hot{fill:var(--heat)} .chart .cool{fill:var(--glass)}
+.alert{background:var(--surface);border:1px solid var(--line);border-left:5px solid var(--heat);border-radius:3px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.alert h3{font-size:1.25rem}
+.alert dl{margin:0;display:grid;gap:10px}
+.alert dt{font:500 .7rem var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--ink-2)}
+.alert dd{margin:2px 0 0;font-size:.94rem}
+.alert .who{border-top:1px solid var(--line);padding-top:12px;font-size:.9rem;color:var(--ink-2)}
+.lagnote{margin-top:18px;font-size:.95rem;color:var(--ink-2)}
+
+/* Solutions */
+.sols{display:grid;gap:14px;grid-template-columns:1fr}
+@media (min-width:760px){.sols{grid-template-columns:1fr 1fr}.sol.lead{grid-column:1/-1}}
+.sol{background:var(--surface);border:1px solid var(--line);border-radius:3px;padding:20px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.sol.lead{border:2px solid var(--heat)}
+.sol-top{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.sol-n{font:700 1.4rem/1 var(--display);color:var(--ink-2)}
+.sol p{font-size:.95rem}
+.sol .q{color:var(--ink-2)}
+.sol dl{margin:auto 0 0;display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:.88rem;border-top:1px solid var(--line);padding-top:12px}
+.sol dt{font:500 .7rem/1.7 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
+.sol dd{margin:0}
+.sol .note{font-size:.85rem;color:var(--ink-2);background:var(--surface-2);padding:8px 10px;border-radius:3px}
+
+/* How it works */
+.steps{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));counter-reset:s;list-style:none;margin:0;padding:0}
+.steps li{counter-increment:s;background:var(--surface);border:1px solid var(--line);border-radius:3px;padding:16px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.steps li::before{content:"Step " counter(s);font:500 .72rem var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--glass)}
+.steps p{font-size:.92rem;color:var(--ink-2)}
+.human{margin-top:10px;background:var(--ink);color:var(--bg);border-radius:3px;padding:18px 20px;display:flex;gap:14px;align-items:flex-start}
+.human svg{flex:none;width:34px;height:34px}
+.human strong{font:600 1.3rem/1.1 var(--display);text-transform:uppercase;display:block;margin-bottom:4px}
+.human p{font-size:.95rem;opacity:.9}
+
+/* Pilot */
+.phases{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));list-style:none;margin:0;padding:0}
+.phases li{border-top:5px solid var(--glass);background:var(--surface);border-left:1px solid var(--line);border-right:1px solid var(--line);border-bottom:1px solid var(--line);border-radius:3px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.phases li:last-child{border-top-color:var(--heat)}
+.phases .wk{font:500 .76rem var(--mono);color:var(--ink-2);letter-spacing:.05em}
+.phases p{font-size:.92rem;color:var(--ink-2)}
+.pilot-facts{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+
+/* Checklist */
+.check{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.check label{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:3px;padding:14px 16px;cursor:pointer}
+.check input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--glass)}
+.check b{font-weight:600}
+.check small{grid-column:2;color:var(--ink-2);font-size:.86rem}
+.check-foot{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;font-size:.95rem}
+.check-foot output{font:500 .9rem var(--mono);color:var(--glass)}
+
+/* CTA */
+.cta{background:var(--glass-soft);padding-block:48px}
+section.cta .wrap{border-top:0;padding-top:0}
+.cta-grid{display:grid;gap:24px;grid-template-columns:1fr}
+@media (min-width:800px){.cta-grid{grid-template-columns:1.3fr 1fr;align-items:center}}
+.contact{background:var(--surface);border:1px solid var(--line);border-radius:3px;padding:20px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.contact .name{font:600 1.5rem/1.1 var(--display);text-transform:uppercase}
+.contact .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font:400 .95rem var(--mono);overflow-wrap:anywhere;user-select:all}
+.copy{font:500 .72rem var(--mono);padding:5px 8px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);border-radius:3px;cursor:pointer;user-select:none}
+.who-we-are{font-size:.95rem;color:var(--ink-2)}
+
+/* The one number */
+.eq{display:grid;gap:14px}
+.eq-frac{background:var(--surface);border:1px solid var(--line);border-radius:3px;padding:22px 18px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;font:600 clamp(1.25rem,4.4vw,1.8rem)/1.15 var(--display);text-transform:uppercase;letter-spacing:.01em}
+.eq-top{color:var(--heat)}
+.eq-bot{color:var(--glass);border-top:3px solid var(--ink);padding-top:12px;width:100%}
+.levers{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.lever{background:var(--surface);border:1px solid var(--line);border-top:5px solid var(--glass);border-radius:3px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.lever.hot{border-top-color:var(--heat)}
+.lever p{font-size:.95rem;color:var(--ink-2)}
+.worked{background:var(--surface);border:1px solid var(--line);border-radius:3px;overflow-x:auto;min-width:0}
+.worked table{width:100%;border-collapse:collapse;font-size:.95rem}
+.worked th,.worked td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:right;font-variant-numeric:tabular-nums}
+.worked th:first-child,.worked td:first-child{text-align:left}
+.worked thead th{font:500 .74rem var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--ink-2)}
+.worked td:not(:first-child){font-family:var(--mono)}
+.worked tr.key td{font-weight:600;border-bottom:0}
+.worked tr.key td:last-child{color:var(--glass)}
+.worked-cap{font-size:.88rem;color:var(--ink-2);margin-top:10px}
+.also{margin-top:14px;font-size:.92rem;color:var(--ink-2)}
+
+/* Phone: larger small text, chart drawn for a narrow screen */
+.chart .narrow{display:none}
+.chart-cap{font-size:.85rem;color:var(--ink-2);padding:0 14px 12px;margin:0}
+.only-phone{display:none}
+@media (max-width:700px){
+  body{font-size:17px}
+  section{padding-block:36px}
+  .lede{font-size:1.08rem}
+  .eyebrow{font-size:.8rem}
+  .tag{font-size:.76rem;padding:6px 8px;white-space:normal;line-height:1.25}
+  .stage-btn{padding:14px}
+  .stage-btn strong{font-size:1.35rem}
+  .stage-btn span{font-size:.86rem}
+  .ribbon-marks{grid-template-columns:1fr 1fr;gap:12px 8px}
+  .ribbon-marks b{font-size:1.3rem}
+  .ribbon-marks span,.ribbon-note,.flow-hint,.chart-cap{font-size:.9rem}
+  .why p,.contrast,.stage-panel p,.stage-panel li,.sol p,.steps p,.phases p,.alert dd,.human p,.lagnote,.who-we-are,.alert .who,.check-foot{font-size:1rem}
+  .sol .note,.check small,.worked-cap,.also{font-size:.92rem}
+  .lever p{font-size:1rem}
+  .stage-panel h4,.alert dt,.sol dt,.phases .wk,.steps li::before{font-size:.78rem}
+  .sol{padding:18px 16px}
+  .sol dl{grid-template-columns:1fr;gap:2px;font-size:1rem}
+  .sol dd{margin-bottom:8px}
+  .sol-top h3{flex:1 1 0;min-width:0}
+  .chart .wide{display:none}
+  .chart .narrow{display:block;min-width:0}
+  .chart .narrow text{font-size:13px}
+  .only-phone{display:inline}
+  .only-wide{display:none}
+}
+
+/* Footer note */
+.footnote{padding-block:28px 40px}
+.brandbar{background:var(--surface);border-bottom:1px solid var(--line)}
+.brandbar .wrap{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-block:11px}
+.mark{font:700 1.5rem/1 var(--display);letter-spacing:.02em;text-transform:uppercase;display:flex;align-items:center;gap:8px}
+.mark i{width:11px;height:11px;border-radius:50%;background:var(--heat);display:block}
+.brandbar span{font:400 .78rem/1.3 var(--mono);color:var(--ink-2);text-align:right}
+.about{border-top:1px solid var(--line);padding-top:16px;display:grid;gap:8px}
+.about p{font-size:.97rem;color:var(--ink-2)}
+.about a{font-weight:600}
+</style>
+</head>
+<body>
+<div class="brandbar"><div class="wrap"><div class="mark"><i></i>Taapti</div><span>AI engineering · Surat</span></div></div>
+
+<header class="hero">
+  <div class="wrap stack">
+    <p class="eyebrow" id="preparedFor">Prepared for float glass plant leadership</p>
+    <h1>You pay for fuel on every tonne you melt. We help you get more <em>saleable glass</em> from the <em class="hot">same fuel</em>.</h1>
+    <p class="lede">We connect your furnace, scanner and production data into one number: energy per saleable tonne. You see what each good tonne really cost in fuel, where that drifts, and the likely reason. Your engineers make every call.</p>
+    <div class="profile" id="profile" hidden></div>
+    <div><a class="btn" href="#contact">Book a 30-minute discovery call</a></div>
+    <div class="ribbon" aria-label="Glass temperature from furnace to cutting">
+      <div class="ribbon-bar"></div>
+      <div class="ribbon-marks">
+        <div><b>1,500°C</b><span>Melting furnace</span></div>
+        <div><b>1,100°C</b><span>Onto the tin bath</span></div>
+        <div><b>600°C</b><span>Into the lehr</span></div>
+        <div><b>~25°C</b><span>Inspected and cut</span></div>
+      </div>
+      <p class="ribbon-note">One ribbon, hot end to cold end. Every stage along it is already logging data.</p>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Why float glass is ready for AI</p>
+      <h2>Same product, every hour, for years</h2>
+    </div>
+    <div class="why">
+      <article>
+        <div class="fact">16 to 20 <small>YEARS PER FURNACE CAMPAIGN</small></div>
+        <h3>It never stops</h3>
+        <p>A float line runs 24/7 for the whole campaign. That gives years of repeatable history to learn what a good day looks like.</p>
+      </article>
+      <article>
+        <div class="fact">0 <small>PAPER FORMS TO DIGITISE</small></div>
+        <h3>The data already exists</h3>
+        <p>Furnace, tin bath and lehr are heavily instrumented, and the DCS and historian log it automatically. We plug into what you have.</p>
+      </article>
+      <article>
+        <div class="fact">°C · m/min · Pa <small>WHAT THE LINE MEASURES</small></div>
+        <h3>It is mostly physics</h3>
+        <p>Temperatures, flows, speeds and pressures behave consistently. A deviation from normal means something, and it can be explained.</p>
+      </article>
+    </div>
+    <p class="contrast">In batch chemistry, every lot is different and experts are right to be wary of AI. A float line is the opposite case: continuous, instrumented and repeatable.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">The one number</p>
+      <h2>Energy per saleable tonne</h2>
+      <p class="lede">Fuel is paid on every tonne melted. Revenue comes only from the tonnes that pass inspection. This number puts both on one line.</p>
+    </div>
+    <div class="eq">
+      <div class="eq-frac">
+        <span class="eq-top">Fuel and power the furnace used</span>
+        <span class="eq-bot">Tonnes melted, minus tonnes rejected, downgraded or lost in changeovers</span>
+      </div>
+      <div class="levers">
+        <article class="lever hot"><h3>Burn less</h3><p>Combustion settings, regenerator condition, cullet share and pull rate all move the top line.</p></article>
+        <article class="lever"><h3>Reject less</h3><p>Every defect and every slow changeover shrinks the bottom line. That glass has already used its fuel.</p></article>
+      </div>
+      <div class="worked">
+        <table>
+          <thead><tr><th>Illustrative day</th><th>Today</th><th>+3 points yield</th></tr></thead>
+          <tbody>
+            <tr><td>Glass melted</td><td>600 t</td><td>600 t</td></tr>
+            <tr><td>Furnace energy</td><td>4,200 GJ</td><td>4,200 GJ</td></tr>
+            <tr><td>Yield</td><td>85%</td><td>88%</td></tr>
+            <tr><td>Saleable glass</td><td>510 t</td><td>528 t</td></tr>
+            <tr class="key"><td>Energy per saleable tonne</td><td>8.24 GJ</td><td>7.95 GJ</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="worked-cap">Illustrative figures, not from any plant. In this example, three points of yield improve the number as much as cutting fuel by about 3.4%.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">What we read about your plants</p>
+      <h2>Three reasons this matters now</h2>
+    </div>
+    <div class="levers">
+      <article class="lever hot"><h3>A new line is going up</h3><p>We read that a new float line of about 1,000 tonnes a day is being built at Oragadam. A line that tracks energy per saleable tonne from its first day has a baseline nobody has to rebuild later.</p></article>
+      <article class="lever"><h3>Low-carbon glass needs a number you can defend</h3><p>A low-carbon product is sold on CO₂ per tonne, and that figure mostly follows the fuel you burn per tonne you can sell. We tie the two together from your own meters.</p></article>
+      <article class="lever"><h3>Exports add specifications to hold</h3><p>We read that exports could grow from about 5% of output to 15% in five years. Every extra specification is another place a tonne can be rejected after it has already used its fuel.</p></article>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">The line, stage by stage</p>
+      <h2>Where the problems start and where they show up</h2>
+      <p class="lede">Select a stage to see what goes wrong there and which of our solutions applies.</p>
+    </div>
+    <div class="flow" id="flow">
+      <div class="stage">
+        <button class="stage-btn" style="--c:var(--ink-2)" aria-expanded="false" aria-controls="p0" id="b0"><strong>Batch house</strong><span>sand, soda ash, cullet</span></button>
+        <div class="stage-panel" id="p0" hidden>
+          <div><h4>What happens</h4><p>Silica sand, soda ash, dolomite, limestone and cullet are weighed and mixed. Cullet is typically 15 to 25% of the batch.</p></div>
+          <div><h4>What goes wrong</h4><ul><li>Composition or moisture drifts between deliveries</li><li>Contaminated cullet brings stones</li><li>A cullet ratio change shifts how the furnace melts</li></ul></div>
+          <div><h4>Where we help</h4><div class="apply"><span class="tag">2 Defect root cause</span><span class="tag">4 Cullet, pull and changeovers</span></div></div>
+        </div>
+      </div>
+      <div class="stage">
+        <button class="stage-btn" style="--c:var(--heat)" aria-expanded="true" aria-controls="p1" id="b1"><strong>Melting furnace</strong><span>~1,500°C, up to 50 h</span></button>
+        <div class="stage-panel" id="p1">
+          <div><h4>What happens</h4><p>Batch melts and refines at about 1,500°C in a gas-fired regenerative furnace. The full melting process can take up to 50 hours.</p></div>
+          <div><h4>What goes wrong</h4><ul><li>Temperature or pull swings leave bubbles and seeds</li><li>Refractory wear sheds stones</li><li>Fuel burns nonstop, the largest energy cost on site</li></ul></div>
+          <div><h4>Where we help</h4><div class="apply"><span class="tag heat">1 Energy per saleable tonne</span><span class="tag">2 Defect root cause</span><span class="tag">3 Regenerator and combustion</span><span class="tag">5 Campaign life and maintenance</span></div></div>
+        </div>
+      </div>
+      <div class="stage">
+        <button class="stage-btn" style="--c:color-mix(in oklab,var(--heat) 55%,var(--glass))" aria-expanded="false" aria-controls="p2" id="b2"><strong>Tin bath</strong><span>1,100 → 600°C</span></button>
+        <div class="stage-panel" id="p2" hidden>
+          <div><h4>What happens</h4><p>Glass floats on molten tin, entering at about 1,100°C and leaving as a solid ribbon at 600°C. Top rollers and line speed set the thickness.</p></div>
+          <div><h4>What goes wrong</h4><ul><li>Tin condenses on the roof and drips back as top speck</li><li>Bath atmosphere upsets cause dross</li><li>Thickness and width changes take time to settle</li></ul></div>
+          <div><h4>Where we help</h4><div class="apply"><span class="tag">2 Defect root cause</span><span class="tag">4 Cullet, pull and changeovers</span><span class="tag">5 Campaign life and maintenance</span></div></div>
+        </div>
+      </div>
+      <div class="stage">
+        <button class="stage-btn" style="--c:color-mix(in oklab,var(--heat) 22%,var(--glass))" aria-expanded="false" aria-controls="p3" id="b3"><strong>Annealing lehr</strong><span>600°C down, slowly</span></button>
+        <div class="stage-panel" id="p3" hidden>
+          <div><h4>What happens</h4><p>The ribbon cools under tight control, along and across its width, to release the stress built up during forming.</p></div>
+          <div><h4>What goes wrong</h4><ul><li>Uneven cooling leaves stress, then breakage at cutting</li><li>Worn or dirty rollers mark the bottom surface</li></ul></div>
+          <div><h4>Where we help</h4><div class="apply"><span class="tag">2 Defect root cause</span><span class="tag">5 Campaign life and maintenance</span></div></div>
+        </div>
+      </div>
+      <div class="stage">
+        <button class="stage-btn" style="--c:var(--glass)" aria-expanded="false" aria-controls="p4" id="b4"><strong>Inspection</strong><span>online scanners</span></button>
+        <div class="stage-panel" id="p4" hidden>
+          <div><h4>What happens</h4><p>Scanners check every square metre for bubbles, seeds, stones, distortion and tin defects, and log type, size, position and time.</p></div>
+          <div><h4>What goes wrong</h4><ul><li>The scanner says that a defect happened, not why</li><li>The cause sits hours upstream, so tracing it is slow and manual</li></ul></div>
+          <div><h4>Where we help</h4><div class="apply"><span class="tag heat">1 Energy per saleable tonne</span><span class="tag">2 Defect root cause</span></div></div>
+        </div>
+      </div>
+      <div class="stage">
+        <button class="stage-btn" style="--c:var(--glass)" aria-expanded="false" aria-controls="p5" id="b5"><strong>Cutting &amp; warehouse</strong><span>cut, sort, pack</span></button>
+        <div class="stage-panel" id="p5" hidden>
+          <div><h4>What happens</h4><p>The ribbon is trimmed and cut to size. Defective areas are cut out and go back as cullet. Good glass is packed.</p></div>
+          <div><h4>What goes wrong</h4><ul><li>Every upstream problem lands here as lost yield</li><li>Changeover glass is downgraded or re-melted</li></ul></div>
+          <div><h4>Where we help</h4><div class="apply"><span class="tag heat">1 Energy per saleable tonne</span><span class="tag">4 Cullet, pull and changeovers</span></div></div>
+        </div>
+      </div>
+    </div>
+    <p class="flow-hint">Glass flows <span class="only-wide">left to right</span><span class="only-phone">top to bottom</span>. The coloured strip on each stage follows its temperature.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Why defects are a fuel problem</p>
+      <h2>The cause happened hours before the defect</h2>
+      <p class="lede">Rejected glass has already burned its fuel. To stop it repeating you need the cause, and the cause sits hours upstream. We shift each upstream signal by the right time lag so cause and effect line up.</p>
+    </div>
+    <div class="rc">
+      <div class="chart" role="img" aria-label="Illustrative timeline: a furnace temperature dip at time zero is linked to a bubble spike at the inspection scanner about 14 hours later.">
+        <svg class="wide" viewBox="0 0 760 344" xmlns="http://www.w3.org/2000/svg">
+          <defs><marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" style="fill:var(--ink)"/></marker></defs>
+          <text x="60" y="34" class="t">FURNACE · zone 3 crown temperature</text>
+          <text x="700" y="34" text-anchor="end">ILLUSTRATIVE</text>
+          <rect x="60" y="74" width="660" height="22" style="fill:var(--glass-soft)"/>
+          <text x="716" y="68" text-anchor="end">normal band</text>
+          <polyline fill="none" style="stroke:var(--heat)" stroke-width="2.5" stroke-linejoin="round" points="60,85 82,83 104,86 126,84 148,85 170,84 188,86 198,100 208,116 220,118 232,106 244,90 258,85 280,84 302,86 324,84 346,85 368,83 390,85 412,86 434,84 456,85 478,84 500,86 522,84 544,85 566,83 588,85 610,86 632,84 654,85 676,84 698,85 720,84"/>
+          <circle cx="214" cy="118" r="5" style="fill:var(--heat)"/>
+          <text x="250" y="124" class="hot">Drops below the normal band</text>
+          <path d="M214 128 C214 204 511 150 511 212" fill="none" style="stroke:var(--ink)" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+          <rect x="302" y="161" width="122" height="24" rx="3" style="fill:var(--ink)"/>
+          <text x="363" y="177" text-anchor="middle" style="fill:var(--bg)">lag about 14 h</text>
+          <text x="60" y="210" class="t">INSPECTION · bubbles per hour</text>
+          <g id="bars"></g>
+          <text x="574" y="246" class="cool">Bubble spike</text>
+          <text x="574" y="262" class="cool">at the scanner</text>
+          <line x1="60" y1="300" x2="720" y2="300" style="stroke:var(--line)" stroke-width="1"/>
+          <g text-anchor="middle">
+            <text x="60" y="322">−6 h</text><text x="192" y="322" class="t">T-0</text><text x="324" y="322">+6 h</text>
+            <text x="456" y="322">+12 h</text><text x="588" y="322">+18 h</text><text x="720" y="322">+24 h</text>
+          </g>
+        </svg>
+        <svg class="narrow" viewBox="0 0 360 322" xmlns="http://www.w3.org/2000/svg">
+          <defs><marker id="arr2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" style="fill:var(--ink)"/></marker></defs>
+          <text x="20" y="24" class="t">FURNACE · zone 3 crown temp</text>
+          <rect x="20" y="44" width="320" height="18" style="fill:var(--glass-soft)"/>
+          <polyline fill="none" style="stroke:var(--heat)" stroke-width="2.5" stroke-linejoin="round" points="20,53 40,52 60,54 68,54 73,66 78,84 84,85 90,72 96,56 110,53 140,54 170,52 200,53 230,54 260,52 290,53 320,54 340,53"/>
+          <circle cx="81" cy="85" r="5" style="fill:var(--heat)"/>
+          <text x="100" y="94" class="hot">Drops below normal band</text>
+          <path d="M81 96 C81 170 262 140 262 202" fill="none" style="stroke:var(--ink)" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arr2)"/>
+          <rect x="112" y="141" width="124" height="26" rx="3" style="fill:var(--ink)"/>
+          <text x="174" y="159" text-anchor="middle" style="fill:var(--bg)">lag about 14 h</text>
+          <text x="20" y="196" class="t">INSPECTION · bubbles per hour</text>
+          <g id="bars2"></g>
+          <text x="248" y="240" text-anchor="end" class="cool">Bubble spike</text>
+          <line x1="20" y1="290" x2="340" y2="290" style="stroke:var(--line)" stroke-width="1"/>
+          <g text-anchor="middle"><text x="73" y="310" class="t">T-0</text><text x="153" y="310">+6 h</text><text x="233" y="310">+12 h</text><text x="313" y="310">+18 h</text></g>
+        </svg>
+        <p class="chart-cap">Illustrative example, not plant data.</p>
+      </div>
+      <div class="alert">
+        <span class="tag heat" style="align-self:flex-start">Example alert · illustrative</span>
+        <h3>Bubble spike on Line 2, likely linked to furnace zone 3</h3>
+        <dl>
+          <div><dt>Which signal</dt><dd>Zone 3 crown temperature</dd></div>
+          <div><dt>How far off normal</dt><dd>Below its usual band for about two hours</dd></div>
+          <div><dt>When</dt><dd>About 14 hours before the spike reached the scanner</dd></div>
+          <div><dt>Also check</dt><dd>Cullet ratio change logged the same shift</dd></div>
+        </dl>
+        <p class="who">The process engineer reviews it, confirms or rejects it, and decides what to do.</p>
+      </div>
+    </div>
+    <p class="lagnote">The real lag is different for each cause. A tin bath defect reaches the scanner quickly. A furnace cause can take many hours, since melting alone lasts up to 50 hours. We estimate the lags from your own history and your engineers check them against what they know.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Five ways we can help, ranked by fit</p>
+      <h2>Start with the number. Then go after what moves it.</h2>
+    </div>
+    <div class="sols">
+      <article class="sol lead">
+        <div class="sol-top"><span class="sol-n">1</span><h3>Energy per saleable tonne tracker</h3><span class="tag lead">Lead offer</span></div>
+        <p class="q">Most plants know fuel per tonne melted. Few can see fuel per good tonne, or say why it was worse last week than last month.</p>
+        <p>We build the number from your meters, scanner and production log, adjust it for pull, cullet share, thickness and colour, and show which periods, shifts and settings cost more fuel for the same glass.</p>
+        <dl>
+          <dt>Output</dt><dd>A daily and per-shift figure, the drifts from your own best periods, and the likely reason for each drift</dd>
+          <dt>Needs</dt><dd>Fuel and power meters, DCS or historian tags, scanner logs, production log</dd>
+          <dt>KPIs</dt><dd>GJ per saleable tonne, fuel cost per saleable tonne, CO₂ per tonne</dd>
+          <dt>For</dt><dd>Plant Head, Head of Furnace, CFO</dd>
+        </dl>
+      </article>
+      <article class="sol">
+        <div class="sol-top"><span class="sol-n">2</span><h3>Defect root-cause finder</h3></div>
+        <p class="q">Scanners tell you that defects happened, not why. Each rejected tonne carries a full share of the fuel bill.</p>
+        <p>We align scanner data with furnace, tin bath and batch data, each shifted by its time lag, and rank the likely upstream causes by strength of evidence.</p>
+        <dl>
+          <dt>Output</dt><dd>A ranked list of likely causes for each defect spike, with the signal, the deviation and the time</dd>
+          <dt>KPIs</dt><dd>Yield, defect rate, time to root cause</dd>
+          <dt>For</dt><dd>Quality Head, Head of Process</dd>
+        </dl>
+      </article>
+      <article class="sol">
+        <div class="sol-top"><span class="sol-n">3</span><h3>Regenerator and combustion watch</h3></div>
+        <p class="q">Checkers block slowly, air preheat falls, and fuel use creeps up over months without anyone seeing a single bad day.</p>
+        <p>We track preheat and efficiency by port and side, and compare air, fuel and reversal settings against your own most efficient periods at the same quality.</p>
+        <p class="note">Supervisory furnace control is well established in float. We do not replace it. We work beside it as the analysis layer.</p>
+        <dl>
+          <dt>Output</dt><dd>Early warning of efficiency loss, and setting suggestions for the furnace team to accept or reject</dd>
+          <dt>KPIs</dt><dd>GJ per tonne melted, air preheat temperature</dd>
+          <dt>For</dt><dd>Head of Furnace, Energy Manager</dd>
+        </dl>
+      </article>
+      <article class="sol">
+        <div class="sol-top"><span class="sol-n">4</span><h3>Cullet, pull and changeover planning</h3></div>
+        <p class="q">More cullet saves fuel but can bring defects. Low pull and long changeovers burn fuel for little saleable glass.</p>
+        <p>We show what each change in cullet share, pull rate and changeover sequence did to fuel and yield on your own line, so a production plan can be costed in fuel before it runs.</p>
+        <dl>
+          <dt>Output</dt><dd>Fuel and yield effect of each planning choice, with the history behind it</dd>
+          <dt>KPIs</dt><dd>Tonnes lost per changeover, GJ per saleable tonne by product</dd>
+          <dt>For</dt><dd>Production Head, Head of Process</dd>
+        </dl>
+      </article>
+      <article class="sol">
+        <div class="sol-top"><span class="sol-n">5</span><h3>Campaign life and maintenance watch</h3></div>
+        <p class="q">The furnace rebuild is the largest capital cost on the line, and an unplanned stop before it is worse.</p>
+        <p>We watch slow trends in crown and refractory temperatures, tin bath equipment and lehr rollers, and flag them early so repairs and the rebuild can be planned.</p>
+        <dl>
+          <dt>Output</dt><dd>Early warnings with the trend that triggered them</dd>
+          <dt>KPIs</dt><dd>Unplanned downtime, campaign length</dd>
+          <dt>For</dt><dd>Head of Maintenance, Plant Head</dd>
+        </dl>
+      </article>
+    </div>
+    <p class="also">Also available for procurement: a should-cost benchmark for fuel, soda ash, silica sand and dolomite.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">How it works</p>
+      <h2>Four steps, then a person decides</h2>
+    </div>
+    <ol class="steps">
+      <li><h3>Connect</h3><p>Read-only access to the historian, scanner logs and production records you already keep.</p></li>
+      <li><h3>Align</h3><p>Line the data up by time and by stage, so each reading matches the glass it affected.</p></li>
+      <li><h3>Learn normal</h3><p>Use your periods of good production to define what normal looks like for each signal.</p></li>
+      <li><h3>Alert and explain</h3><p>Flag a deviation and say which signal moved, how far and when.</p></li>
+    </ol>
+    <div class="human">
+      <svg viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="11" r="6" fill="none" stroke="currentColor" stroke-width="2"/><path d="M5 31c0-7 5-11 12-11s12 4 12 11" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+      <div><strong>Your engineer makes the call</strong><p>This is decision support. Our software changes no setpoint. If an insight cannot be explained in plain terms, it does not go out.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">A pilot you can judge</p>
+      <h2>One line, one number, your own history</h2>
+      <p class="lede" id="pilotLede">We start by looking back. We build the energy per saleable tonne history for one line, show where it drifted and the likely causes, and your engineers tell us whether it matches what they already suspect. Only then do alerts go live.</p>
+    </div>
+    <div class="pilot-facts">
+      <span class="tag" id="pilotLine">One float line</span>
+      <span class="tag heat">Energy per saleable tonne</span>
+      <span class="tag">6 to 12 months of history</span>
+      <span class="tag">Read-only data access</span>
+    </div>
+    <ol class="phases">
+      <li><span class="wk">WEEKS 1 TO 2</span><h3>Discovery and data access</h3><p>Walk the line with your team. Agree the problem, the tags and the export format.</p></li>
+      <li><span class="wk">WEEKS 3 TO 5</span><h3>Data alignment</h3><p>Join fuel, scanner, process and batch data on one timeline. Estimate the lags.</p></li>
+      <li><span class="wk">WEEKS 6 TO 8</span><h3>Findings review</h3><p>Present the baseline, the biggest drifts and their likely causes. Your engineers confirm, correct or reject each finding.</p></li>
+      <li><span class="wk">WEEKS 9 TO 12</span><h3>Live pilot</h3><p>Explained alerts on the chosen line, reviewed with your team every week.</p></li>
+    </ol>
+    <p class="flow-hint">Durations are indicative. We fix them with you after discovery.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">What we need from you</p>
+      <h2>Six data sources. Tick what you have.</h2>
+    </div>
+    <ul class="check" id="check">
+      <li><label for="d0"><input type="checkbox" id="d0"><b>Fuel and power meters</b><small>Gas or oil flow, electric boost and combustion air, hourly or better.</small></label></li>
+      <li><label for="d1"><input type="checkbox" id="d1"><b>Process tags for furnace, tin bath and lehr</b><small>Usually in the DCS or historian. A CSV export is enough to start.</small></label></li>
+      <li><label for="d2"><input type="checkbox" id="d2"><b>Defect scanner logs</b><small>Type, size, position and time for each defect.</small></label></li>
+      <li><label for="d3"><input type="checkbox" id="d3"><b>Batch composition, cullet ratio and raw material quality</b><small>Batch house system, lab records or spreadsheets.</small></label></li>
+      <li><label for="d4"><input type="checkbox" id="d4"><b>Production log</b><small>Line speed, thickness, colour and changeover times.</small></label></li>
+      <li><label for="d5"><input type="checkbox" id="d5"><b>Maintenance and downtime log</b><small>CMMS, ERP or shift registers.</small></label></li>
+    </ul>
+    <div class="check-foot"><output id="checkOut" for="d0 d1 d2 d3 d4 d5">0 of 6 available</output><span>The one question for the first call: where does each of these live, and in what format?</span></div>
+  </div>
+</section>
+
+<section class="cta" id="contact">
+  <div class="wrap cta-grid">
+    <div class="stack">
+      <h2>30 minutes to see if your data can answer this</h2>
+      <p>Bring your fuel cost per tonne and one defect that keeps coming back. We will tell you plainly whether your existing data is likely to explain it, and what a pilot would look like.</p>
+      <p class="who-we-are">We are an AI and data engineering team. We are not glass technologists, and your people know the process better than we ever will. What we bring is the work around it: connecting messy plant data, solving the time-lag problem, and building tools engineers can check and trust.</p><div class="about"><div class="mark"><i></i>Taapti Technologies</div><p>An AI engineering firm in Surat. We build custom AI models and the software around them, trained on your data and running on your servers.</p></div>
+    </div>
+    <div class="contact">
+      <span class="eyebrow">Discovery call</span>
+      <span class="name" id="cName">Pick a time that suits you</span>
+      <span id="cRole">Reply to the message this page came with and we will set up the call.</span>
+      <div class="row" id="cEmailRow" hidden><span id="cEmail"></span><button class="copy" type="button" data-copy="cEmail">Copy</button></div>
+      <div class="row" id="cPhoneRow" hidden><span id="cPhone"></span><button class="copy" type="button" data-copy="cPhone">Copy</button></div>
+      <a id="cLink" href="#" target="_blank" rel="noopener" hidden></a>
+    </div>
+  </div>
+</section>
+
+<footer class="footnote">
+  <div class="wrap">
+    <p class="flow-hint">Taapti Technologies, Surat.</p>
+    <p class="flow-hint">The timeline and the example alert are illustrative. They show the form of the output and are not results from any plant.</p>
+  </div>
+</footer>
+
+<script>
+/* ===== COMPANY CONFIG: fill this in per target account. Empty fields are simply left off the page. ===== */
+const CONFIG = {
+  company_name: "Saint-Gobain India",        // e.g. "Acme Float Glass"
+  plant_location: "Float glass plants",      // e.g. "Bharuch, Gujarat"
+  number_of_lines: "",     // e.g. 2
+  capacity_tpd: "",        // tonnes per day, e.g. 1200
+  products: [],            // e.g. ["clear", "tinted", "coated", "mirror"]
+  pain_points: [],         // short phrases, e.g. ["bubble spikes after cullet changes"]
+  hero_subhead: "We connect your furnace, scanner and production data into one number: energy per saleable tonne. You see what each good tonne cost in fuel, where that drifts, and the likely reason. Your engineers make every call, and the models run on a server inside your own network.",        // optional tailored subhead; replaces the default lede
+  pilot_line: "One existing float line",          // e.g. "Line 2"
+  contact_name: "Gopal Sabhadiya",
+  contact_role: "Founder & CEO, Taapti Technologies",
+  email: "",
+  phone: "",
+  contact_link: "https://www.linkedin.com/in/gopal-sabhadiya",
+  contact_link_label: "Message on LinkedIn"
+};
+/* ===== end config ===== */
+
+(function () {
+  const $ = id => document.getElementById(id);
+  const c = CONFIG;
+
+  // Tailoring
+  if (c.company_name) {
+    $("preparedFor").textContent = "Prepared for " + c.company_name + (c.plant_location ? " · " + c.plant_location : "");
+    document.title = c.company_name + " Float Line Brief · Taapti";
+  }
+  if (c.hero_subhead) document.querySelector(".hero .lede").textContent = c.hero_subhead;
+  const chips = [];
+  if (c.number_of_lines) chips.push(c.number_of_lines + (Number(c.number_of_lines) === 1 ? " float line" : " float lines"));
+  if (c.capacity_tpd) chips.push(Number(c.capacity_tpd).toLocaleString("en-IN") + " tonnes per day");
+  if (c.products.length) chips.push(c.products.join(", "));
+  c.pain_points.forEach(p => chips.push(p));
+  if (chips.length) {
+    const box = $("profile");
+    chips.forEach(t => { const s = document.createElement("span"); s.className = "tag"; s.textContent = t; box.appendChild(s); });
+    box.hidden = false;
+  }
+  if (c.pilot_line) $("pilotLine").textContent = c.pilot_line;
+  else if (Number(c.number_of_lines) > 1) $("pilotLine").textContent = "One of your " + c.number_of_lines + " lines";
+  if (c.contact_name) $("cName").textContent = c.contact_name;
+  if (c.contact_role) $("cRole").textContent = c.contact_role;
+  if (c.email) { $("cEmail").textContent = c.email; $("cEmailRow").hidden = false; }
+  if (c.phone) { $("cPhone").textContent = c.phone; $("cPhoneRow").hidden = false; }
+  if (c.contact_link) { $("cLink").href = c.contact_link; $("cLink").textContent = c.contact_link_label || c.contact_link; $("cLink").hidden = false; }
+
+  // Process flow: one stage open at a time
+  const btns = [...document.querySelectorAll(".stage-btn")];
+  btns.forEach(b => b.addEventListener("click", () => {
+    btns.forEach(o => {
+      const on = o === b;
+      o.setAttribute("aria-expanded", on);
+      $(o.getAttribute("aria-controls")).hidden = !on;
+    });
+  }));
+
+  // Illustrative defect bars: hour -6 to +23, spike at +14 to +16
+  const h = [8,6,9,7,8,6,7,9,6,8,7,6,8,9,7,6,8,7,9,14,46,78,58,26,10,8,7,6,8,7];
+  const g = $("bars"), NS = "http://www.w3.org/2000/svg";
+  h.forEach((v, i) => {
+    const r = document.createElementNS(NS, "rect");
+    r.setAttribute("x", 60 + i * 22 + 3); r.setAttribute("y", 300 - v);
+    r.setAttribute("width", 16); r.setAttribute("height", v);
+    r.style.fill = v > 20 ? "var(--glass)" : "var(--line)";
+    g.appendChild(r);
+  });
+  const g2 = $("bars2");
+  h.slice(2, 26).forEach((v, i) => {            // phone chart: hour -4 to +19
+    const r = document.createElementNS(NS, "rect");
+    r.setAttribute("x", 20 + i * 13.33 + 1.5); r.setAttribute("y", 290 - v);
+    r.setAttribute("width", 10); r.setAttribute("height", v);
+    r.style.fill = v > 20 ? "var(--glass)" : "var(--line)";
+    g2.appendChild(r);
+  });
+
+  // Checklist count
+  const boxes = [...document.querySelectorAll("#check input")];
+  const upd = () => { $("checkOut").textContent = boxes.filter(b => b.checked).length + " of " + boxes.length + " available"; };
+  boxes.forEach(b => b.addEventListener("change", upd)); upd();
+
+  // Copy buttons
+  document.querySelectorAll(".copy").forEach(b => b.addEventListener("click", () => {
+    const el = $(b.dataset.copy);
+    const done = () => { b.textContent = "Copied"; setTimeout(() => b.textContent = "Copy", 1500); };
+    const select = () => { const r = document.createRange(); r.selectNodeContents(el); const s = getSelection(); s.removeAllRanges(); s.addRange(r); };
+    try { navigator.clipboard.writeText(el.textContent).then(done, select); } catch (e) { select(); }
+  }));
+})();
+</script>
+</body>
+</html>
